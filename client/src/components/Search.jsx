@@ -6,6 +6,8 @@ class Search extends React.Component {
     this.state = {
       term: ''
     }
+    this.onChange = this.onChange.bind(this); // Have to bind here so this in change access Search's state, which holds term
+    this.search = this.search.bind(this); // Have to bind here because search uses this.state.term, and this has to be bound in that scope
   }
 
   onChange (e) {

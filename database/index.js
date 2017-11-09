@@ -3,14 +3,40 @@ mongoose.connect('mongodb://localhost/fetcher');
 
 let repoSchema = mongoose.Schema({
   // TODO: your schema here!
+  id: Number,
+  name: String,
+  full_name: String,
+  owner: String
+  //And like 30 more potentially
 });
 
 let Repo = mongoose.model('Repo', repoSchema);
 
-let save = (/* TODO */) => {
+let save = (repos) => {
   // TODO: Your code here
   // This function should save a repo or repos to
   // the MongoDB
+  //Save will take in an array of objects that correspond to github repos
+  //We should then take those repos and create Repo models with them, and save them
+  var newRepo;
+  console.log('Type of Repos line 21 db:', typeof repos);
+  //console.log('repos line 22', repos)
+  repos.forEach((repo) => {
+    newRepo = new Repo(repo);//Repo will be an object with all the correct key values
+    newRepo.save((err,data)=>{
+      if(err) {return console.log(err);}
+    }); //Save the new repo model to the mongo db
+  });
 }
 
+//Function to take the latest 25 repos and return them
+let find = () => {
+  return Repo.find().sort({$natural:1}).limit(25);
+};
+
+let checkForUser = (user) => {
+  var userExists = false;
+  // if (Repo.find()
+}
 module.exports.save = save;
+module.exports.find = find;
