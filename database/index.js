@@ -3,10 +3,11 @@ mongoose.connect('mongodb://localhost/fetcher');
 
 let repoSchema = mongoose.Schema({
   // TODO: your schema here!
-  id: Number,
+  id: Number,//mongoose.Schema.Types.ObjectId,//This or number works
   name: String,
   full_name: String,
-  owner: String
+  owner: String,
+  updated_at: String, //Created at not showing up
   //And like 30 more potentially
 });
 
@@ -18,11 +19,17 @@ let save = (repos) => {
   // the MongoDB
   //Save will take in an array of objects that correspond to github repos
   //We should then take those repos and create Repo models with them, and save them
-  var newRepo;
-  console.log('Type of Repos line 21 db:', typeof repos);
+  let newRepo;
+  //console.log('Type of Repos line 21 db:', typeof repos);
   //console.log('repos line 22', repos)
   repos.forEach((repo) => {
-    newRepo = new Repo(repo);//Repo will be an object with all the correct key values
+    newRepo = new Repo({
+     id: repo.id,
+     name: repo.name,
+     full_name:repo.full_name,
+     owner: repo.owner.login,
+     updated_at: repo.updated_at
+    });//Repo will be an object with all the correct key values
     newRepo.save((err,data)=>{
       if(err) {return console.log(err);}
     }); //Save the new repo model to the mongo db
@@ -31,12 +38,21 @@ let save = (repos) => {
 
 //Function to take the latest 25 repos and return them
 let find = () => {
-  return Repo.find().sort({$natural:1}).limit(25);
+  return new Promise((resolve, reject) => {
+    // console.log('in the find promise')
+    resolve(Repo.find().sort({updated_at:1}).limit(25));
+  })
 };
 
 let checkForUser = (user) => {
-  var userExists = false;
+  return new Promise((resolve,reject) => {
+    // console.log('in the check for user');
+    // console.log('repo.find by owner = user', Repo.find({owner:user}));
+    
+    resolve(Repo.find({owner:{'$regex':user}}));
+  });
   // if (Repo.find()
 }
 module.exports.save = save;
 module.exports.find = find;
+module.exports.checkForUser = checkForUser;

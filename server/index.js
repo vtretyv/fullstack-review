@@ -20,21 +20,45 @@ app.post('/repos', function (req, res) {
         //Take the array from the response body and then save it to the database,
   //Start a get using express
   //Create a new promise to deal with app.get async
-  // console.log('req.body line 21', req.body);
-  // console.log(helper.getReposByUsername(req.body.username));
-  // console.log('req.body.username', req.body.username)
-  helper.getReposByUsername(req.body.username).then((response) => {
-    //console.log('In the then ');
-    // console.log('response in the helper promise : ', response);//403 right now, as I don't have api token set up, now have token and still broke D:
+  
+  db.checkForUser(req.body.username).then((userData) =>{
+    // console.log('type of userData line 25', typeof userData)
+    // console.log('userData line 26',userData)
+    // console.log('userData === []', userData === [])
+    // console.log('userData.length', userData.length === 0);
     
-    res.status(200);
-    // console.log('res.statusCode line 31:',res.statusCode);
-    db.save(JSON.parse(response));
-  }).then((response) =>{
+    if(userData.length === 0) {
+      // res.status(200);
+      // console.log('User data in the check for user', userData);
+      // console.log('Type of User data in the check for user', typeof userData);
+      
+      // res.send(JSON.stringify(userData));
+      // console.log('in the if line 31');
+      helper.getReposByUsername(req.body.username).then((response) => {
+      res.status(200);
+      // console.log('response in the if', response);
+      // console.log('in the get repos by username in side the checkuser promise');
+      db.save(JSON.parse(response));
+      res.end();
+      })
+      // res.end();
+      return;
+    }
+    // console.log('userData in the else:', userData)
+  //   helper.getReposByUsername(req.body.username).then((response) => {
+  //   res.status(200);
+  //   // console.log('in the get repos by username in side the checkuser promise');
+  //   db.save(JSON.parse(response));
+    res.end();
+  // })
+  });
+
+  
+  // .then((response) =>{
     
-    res.send('Hello World');
-    res.end(); 
-  })
+  //   res.send('Hello World');
+  //   res.end(); 
+  // })
  
     
     
@@ -45,9 +69,20 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
-  console.log('in the get yo');
-  res.status(200).send(db.find());
+  // console.log('in the get yo');
+  //res.send('after the get console yo')
+  //res.status(200).send(db.find());
+  db.find().then((results) => {
+    //console.log('Type of results in get line 51:', typeof results)
+    // res.send(results);
+    //console.log('results line 54 :', JSON.stringify(results));
+    res.status(200);
+    res.send(JSON.stringify(results));
+    res.end();
+  });
+  //res.end();
 });
+
 
 let port = 1128;
 
