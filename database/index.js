@@ -20,8 +20,6 @@ let save = (repos) => {
   //Save will take in an array of objects that correspond to github repos
   //We should then take those repos and create Repo models with them, and save them
   let newRepo;
-  //console.log('Type of Repos line 21 db:', typeof repos);
-  //console.log('repos line 22', repos)
   repos.forEach((repo) => {
     newRepo = new Repo({
      id: repo.id,
@@ -46,9 +44,6 @@ let find = () => {
 
 let checkForUser = (user) => {
   return new Promise((resolve,reject) => {
-    // console.log('in the check for user');
-    // console.log('repo.find by owner = user', Repo.find({owner:user}));
-    
     resolve(Repo.find({owner:{'$regex':user}}));
   });
   // if (Repo.find()

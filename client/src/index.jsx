@@ -76,7 +76,7 @@ class App extends React.Component {
       <Search onSearch={this.search.bind(this)}/>
       <ul>
       {this.state.repos.map((repo,iter) => 
-        <RepoViewer repo = {repo}/>
+        <RepoViewer repo = {repo} key = {iter}/>
       )}
       </ul>
     </div>)

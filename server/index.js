@@ -22,47 +22,28 @@ app.post('/repos', function (req, res) {
   //Create a new promise to deal with app.get async
   
   db.checkForUser(req.body.username).then((userData) =>{
-    // console.log('type of userData line 25', typeof userData)
-    // console.log('userData line 26',userData)
-    // console.log('userData === []', userData === [])
-    // console.log('userData.length', userData.length === 0);
-    
+
     if(userData.length === 0) {
-      // res.status(200);
-      // console.log('User data in the check for user', userData);
-      // console.log('Type of User data in the check for user', typeof userData);
-      
-      // res.send(JSON.stringify(userData));
-      // console.log('in the if line 31');
+
       helper.getReposByUsername(req.body.username).then((response) => {
-      res.status(200);
+      // if(err) {return console.log(error)};
       // console.log('response in the if', response);
       // console.log('in the get repos by username in side the checkuser promise');
+      res.status(200);
       db.save(JSON.parse(response));
       res.end();
+      }).catch((error) =>{
+        res.end();
       })
       // res.end();
       return;
     }
-    // console.log('userData in the else:', userData)
-  //   helper.getReposByUsername(req.body.username).then((response) => {
-  //   res.status(200);
-  //   // console.log('in the get repos by username in side the checkuser promise');
-  //   db.save(JSON.parse(response));
+    res.status(200);
     res.end();
   // })
   });
 
-  
-  // .then((response) =>{
-    
-  //   res.send('Hello World');
-  //   res.end(); 
-  // })
- 
-    
-    
-  // })
+
   
 });
 
@@ -73,9 +54,6 @@ app.get('/repos', function (req, res) {
   //res.send('after the get console yo')
   //res.status(200).send(db.find());
   db.find().then((results) => {
-    //console.log('Type of results in get line 51:', typeof results)
-    // res.send(results);
-    //console.log('results line 54 :', JSON.stringify(results));
     res.status(200);
     res.send(JSON.stringify(results));
     res.end();
