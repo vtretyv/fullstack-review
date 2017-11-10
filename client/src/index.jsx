@@ -11,7 +11,6 @@ class App extends React.Component {
     this.state = { 
       repos: []
     }
-    // this.search = this.search.bind(this); //Do we have to bind here?
   
   }
   componentDidMount() {
@@ -19,11 +18,9 @@ class App extends React.Component {
     $.ajax({
       type: 'GET',
       url: '/repos',
-      //data: , //Data just the term?
       contentType: 'application/json',
       success : function(data) {  
         console.log('GET succeeded, data in get', data);
-        // console.log('Data type in componentDidMount', typeof data);
         context.setState({repos: JSON.parse(data)});
       },
       error : function() {
@@ -54,11 +51,9 @@ class App extends React.Component {
     $.ajax({
       type: 'GET',
       url: '/repos',
-      //data: , //Data just the term?
       contentType: 'application/json',
       success : function(data) {  
         console.log('GET succeeded');
-        // console.log('Data type in componentDidMount', typeof data);
         context.setState({repos: JSON.parse(data)});
       },
       error : function() {

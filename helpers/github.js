@@ -18,7 +18,6 @@ let getReposByUsername = (user) => {
   };
   
   return new Promise((resolve,reject) => {
-              console.log('in the promise');
               request(options,(err,response,body)=>{
                 if(err) {throw err;};
                 resolve(body);

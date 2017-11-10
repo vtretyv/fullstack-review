@@ -39,7 +39,6 @@ let save = (repos) => {
 //Function to take the latest 25 repos and return them
 let find = () => {
   return new Promise((resolve, reject) => {
-    // console.log('in the find promise')
     resolve(Repo.find().sort({updated_at:1}).limit(25));
   })
 };
@@ -48,7 +47,6 @@ let checkForUser = (user) => {
   return new Promise((resolve,reject) => {
     resolve(Repo.find({owner:{'$regex':user}}));
   });
-  // if (Repo.find()
 }
 module.exports.save = save;
 module.exports.find = find;

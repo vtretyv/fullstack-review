@@ -26,9 +26,6 @@ app.post('/repos', function (req, res) {
     if(userData.length === 0) {
 
       helper.getReposByUsername(req.body.username).then((response) => {
-      // if(err) {return console.log(error)};
-      // console.log('response in the if', response);
-      // console.log('in the get repos by username in side the checkuser promise');
       res.status(200);
       db.save(JSON.parse(response));
       res.end();
@@ -50,15 +47,11 @@ app.post('/repos', function (req, res) {
 app.get('/repos', function (req, res) {
   // TODO - your code here!
   // This route should send back the top 25 repos
-  // console.log('in the get yo');
-  //res.send('after the get console yo')
-  //res.status(200).send(db.find());
   db.find().then((results) => {
     res.status(200);
     res.send(JSON.stringify(results));
     res.end();
   });
-  //res.end();
 });
 
 
