@@ -7,7 +7,8 @@ let repoSchema = mongoose.Schema({
   name: String,
   full_name: String,
   owner: String,
-  updated_at: String, //Created at not showing up
+  updated_at: String,
+  html_url: String
   //And like 30 more potentially
 });
 
@@ -26,7 +27,8 @@ let save = (repos) => {
      name: repo.name,
      full_name:repo.full_name,
      owner: repo.owner.login,
-     updated_at: repo.updated_at
+     updated_at: repo.updated_at,
+     html_url: repo.html_url
     });//Repo will be an object with all the correct key values
     newRepo.save((err,data)=>{
       if(err) {return console.log(err);}
